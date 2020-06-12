@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Datos</title>
+</head>
+<style>
+    .container {
+        width: 80%;
+        height: 50%;
+    }
+</style>
+
+<body>
+    <h2>Grafica </h2>
+    <div class="container">
+        <canvas id="myChart"></canvas>
+    </div>
+  
+
+</body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> 
+
+<script>
+
+    {% autoescape off %}
+	temperaturas = {{valores}} 
+    fechas= {{ fechas }}
+	{% endautoescape %}
+    
+   
+   
+    var ctx = document.getElementById("myChart").getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: fechas,
+            datasets: [{
+                label: 'This week',
+                data: temperaturas,
+                lineTension: 0.3,
+                backgroundColor: "rgba(78, 115, 223, 0.05)",
+                borderColor: "rgba(78, 115, 223, 1)",
+                pointRadius: 3,
+                pointBackgroundColor: "rgba(78, 115, 223, 1)",
+                pointBorderColor: "rgba(78, 115, 223, 1)",
+                pointHoverRadius: 3,
+                pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+                pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+                pointHitRadius: 10,
+                pointBorderWidth: 2,
+            }]
+        },
+    });
+
+ setInterval(update,2000)
+function succes(data,status){
+     console.log(data )
+}
+
+ function update(){
+    $.get("/update", succes);
+
+ }
+   
+</script>
+
+</html>

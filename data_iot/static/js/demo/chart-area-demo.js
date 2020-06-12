@@ -31,16 +31,17 @@ function number_format(number, decimals, dec_point, thousands_sep) {
 var ctx = document.getElementById("myAreaChart");
 
   //var datos = {{ msg | tojson }};
-  //var datos= JSON.parse('{{ geocode | tojson }}');
-	var json = JSON.parse('{{ json | tojson | safe}}');
-	
-console.log(json)
+  //var dato= {{ msg | tojson }}
+	// var json = JSON.parse('{{ msg | tojson | safe}}');
+ // console.log(dato)
+   var nuevo= document.getElementById("dato").textContent
+console.log(nuevo)
 var myLineChart = new Chart(ctx, {
   type: 'line',
   data: {
     labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
     datasets: [{
-      label: "Earnings",
+      label: "Temperatura",
       lineTension: 0.3,
       backgroundColor: "rgba(78, 115, 223, 0.05)",
       borderColor: "rgba(78, 115, 223, 1)",
@@ -52,7 +53,7 @@ var myLineChart = new Chart(ctx, {
       pointHoverBorderColor: "rgba(78, 115, 223, 1)",
       pointHitRadius: 10,
       pointBorderWidth: 2,
-      data: [0, 10000, 5000, 15000, 10000, 20000, 15000, 25000, 20000, 30000, 25000, 40000],
+      data: nuevo,
     }],
   },
   options: {
@@ -75,16 +76,16 @@ var myLineChart = new Chart(ctx, {
           drawBorder: false
         },
         ticks: {
-          maxTicksLimit: 7
+          maxTicksLimit: 20
         }
       }],
       yAxes: [{
         ticks: {
-          maxTicksLimit: 5,
+          maxTicksLimit: 25,
           padding: 10,
           // Include a dollar sign in the ticks
           callback: function(value, index, values) {
-            return '$' + number_format(value);
+            return 'Cº' + number_format(value);
           }
         },
         gridLines: {
