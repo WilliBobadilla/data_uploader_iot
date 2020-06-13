@@ -15,7 +15,7 @@
 </style>
 
 <body>
-    <h2>Grafica </h2>
+    <h2>Grafica de los sensores  </h2>
     <div class="container">
         <canvas id="myChart"></canvas>
     </div>
@@ -31,10 +31,7 @@
     {% autoescape off %}
 	temperaturas = {{valores}} 
     fechas= {{ fechas }}
-	{% endautoescape %}
-    
-   
-   
+	{% endautoescape %}   
     var ctx = document.getElementById("myChart").getContext('2d');
     var myChart = new Chart(ctx, {
         type: 'line',
@@ -58,9 +55,15 @@
         },
     });
 
- setInterval(update,10000) //cada 10 seg actualiza 
-function succes(data,status){
-     console.log(data)
+ //setInterval(update,10000) //cada 10 seg actualiza 
+function succes(datos,status){
+     console.log('fecha no mas'+datos.fechas)
+     console.log('valores: '+datos.valores)
+     myChart.data.labels.pop()
+     myChart.data.datasets[0].data.pop()
+     myChart.data.labels.push(datos.fechas )
+     myChart.data.datasets[0].data.push(datos.valores)
+     myChart.update()
 }
 
  function update(){
