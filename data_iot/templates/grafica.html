@@ -1,110 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
- <!-- Latest compiled and minified CSS -->
- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 
- <!-- jQuery library -->
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
- 
- <!-- Popper JS -->
- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
- 
- <!-- Latest compiled JavaScript -->
- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script> 
+  <!-- agregamos la hamburguesa -->
+  <link href="https://unpkg.com/material-components-web@v4.0.0/dist/material-components-web.min.css" rel="stylesheet">
+  <script src="https://unpkg.com/material-components-web@v4.0.0/dist/material-components-web.min.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <script src="https://cdn.jsdelivr.net/npm/@material/drawer@5.1.0/dist/mdc.drawer.min.js"></script>
+  <link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
 
 
 
 
-
-    <title>Datos</title>
+  <title>Datos</title>
 </head>
 <style>
-    .container {
-        width: 80%;
-        height: 50%;
-    }
+  .container {
+    width: 80%;
+    height: 50%;
+  }
 </style>
 
-<body>
-    <div class="pos-f-t">
-        <div class="collapse" id="navbarToggleExternalContent">
-          <div class="bg-dark p-4">
-            <h5 class="text-white" onclick="window.location='/mapa'">Mapa</h5>
-          </div>
-          <div class="bg-dark p-4">
-            <h5 class="text-white" onclick="window.location='/logout'">Salir</h5>
-            
-          </div>
 
-        </div>
-        <nav class="navbar navbar-dark bg-dark">
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-        </nav>
-      </div>
-    <h2>Grafica de los sensores  </h2>
-    <div class="container">
+  {% block bar %}
+  {% include "layouts/slidebar.html" %}
+  {% endblock %}
+
+  <main class="main-content" style="overflow-x: hidden;" id="main-content">
+    <div class="mdc-top-app-bar--fixed-adjust">
+
+      <h2>Grafica de los sensores </h2>
+      <div class="container">
         <canvas id="myChart"></canvas>
-    </div>
-  
+      </div>
 
-</body>
+
+    </div>
+  </main>
+
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> 
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="/static/js/slide.js"></script>
+
 
 <script>
 
-    {% autoescape off %}
-	temperaturas = {{valores}} 
-    fechas= {{ fechas }}
-	{% endautoescape %}   
-    var ctx = document.getElementById("myChart").getContext('2d');
-    var myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: fechas,
-            datasets: [{
-                label: 'This week',
-                data: temperaturas,
-                lineTension: 0.3,
-                backgroundColor: "rgba(78, 115, 223, 0.05)",
-                borderColor: "rgba(78, 115, 223, 1)",
-                pointRadius: 3,
-                pointBackgroundColor: "rgba(78, 115, 223, 1)",
-                pointBorderColor: "rgba(78, 115, 223, 1)",
-                pointHoverRadius: 3,
-                pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
-                pointHoverBorderColor: "rgba(78, 115, 223, 1)",
-                pointHitRadius: 10,
-                pointBorderWidth: 2,
-            }]
-        },
-    });
+  {% autoescape off %}
+  temperaturas = {{ valores }}
+  fechas = {{ fechas }}
+  {% endautoescape %}
+  var ctx = document.getElementById("myChart").getContext('2d');
+  var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: fechas,
+      datasets: [{
+        label: 'This week',
+        data: temperaturas,
+        lineTension: 0.3,
+        backgroundColor: "rgba(78, 115, 223, 0.05)",
+        borderColor: "rgba(78, 115, 223, 1)",
+        pointRadius: 3,
+        pointBackgroundColor: "rgba(78, 115, 223, 1)",
+        pointBorderColor: "rgba(78, 115, 223, 1)",
+        pointHoverRadius: 3,
+        pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+        pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+        pointHitRadius: 10,
+        pointBorderWidth: 2,
+      }]
+    },
+  });
 
- //setInterval(update,10000) //cada 10 seg actualiza 
-function succes(datos,status){
-     console.log('fecha no mas'+datos.fechas)
-     console.log('valores: '+datos.valores)
-     myChart.data.labels.pop()
-     myChart.data.datasets[0].data.pop()
-     myChart.data.labels.push(datos.fechas )
-     myChart.data.datasets[0].data.push(datos.valores)
-     myChart.update()
-}
 
- function update(){
+
+  //setInterval(update,10000) //cada 10 seg actualiza 
+  function succes(datos, status) {
+    console.log('fecha no mas' + datos.fechas)
+    console.log('valores: ' + datos.valores)
+    myChart.data.labels.pop()
+    myChart.data.datasets[0].data.pop()
+    myChart.data.labels.push(datos.fechas)
+    myChart.data.datasets[0].data.push(datos.valores)
+    myChart.update()
+  }
+
+  function update() {
     $.get("/update", succes);
 
- }
-   
+  }
+
 </script>
 
 </html>

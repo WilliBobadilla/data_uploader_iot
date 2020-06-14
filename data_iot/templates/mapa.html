@@ -5,9 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Datos</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <!-- para el slide bar -->
+    <link href="https://unpkg.com/material-components-web@v4.0.0/dist/material-components-web.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/material-components-web@v4.0.0/dist/material-components-web.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script src="https://cdn.jsdelivr.net/npm/@material/drawer@5.1.0/dist/mdc.drawer.min.js"></script>
+    <link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+    <!-- fin cdn slide bar  -->
+
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
         integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
         crossorigin="" />
@@ -17,40 +25,46 @@
 
     <style>
         #mapid {
-            height: 480px;
+            height: 400px;
             width: 100%;
         }
     </style>
 </head>
 
 
-<body>
+{% block bar %}
+{% include "layouts/slidebar.html" %}
+{% endblock %}
 
-    <h3> Datos de sensores </h3>
-    <div> 
-        <h4> Mapa de los sensores colocados </h4>
-    </div>
-    <div>
-        <h5>Cantidad de sensores colocados: {{ datos.codigos|length }}</h5>
-    </div>
-    <div>
-        <form method="POST" id="formulario" onchange="consulta()">
-            {% csrf_token %}
-            <label for="lname">Dispositivos:</label> <br>
-            <select id="select_dispositivo" class="form-control w-75" name="select_dispositivo">
-                <option value="0" id="0" latitud="-26.56" longitud="-58.56" selected> Paraguay</option>
-            </select> <br>
-        </form>
-    </div>
+<main class="main-content" style="overflow-x: hidden;" id="main-content">
+    <div class="mdc-top-app-bar--fixed-adjust">
 
-    <div id="mapid"></div>
+        <div>
+            <h4> Mapa de los sensores colocados </h4>
+        </div>
+        <div>
+            <h5>Cantidad de sensores colocados: {{ datos.codigos|length }}</h5>
+        </div>
+        <div>
+            <form method="POST" id="formulario" onchange="consulta()">
+                {% csrf_token %}
+                <label for="lname">Dispositivos:</label> <br>
+                <select id="select_dispositivo" class="form-control w-75" name="select_dispositivo">
+                    <option value="paraguay" id="paraguay" latitud="-23.3267916" longitud="-57.545121" selected> Paraguay
+                    </option>
+                </select> <br>
+            </form>
+        </div>
 
-</body>
+        <div id="mapid"></div>
+    </div>
+</main>
+<script src="/static/js/slide.js"></script>
 <script>
     {% autoescape off %}
     datos = {{ datos }}
     {% endautoescape %}
-    console.log(datos) 
+    console.log(datos)
     var com = document.getElementById("select_dispositivo")
 
     for (var index = 0; index < datos.codigos.length; index++) {
@@ -64,7 +78,7 @@
         com.appendChild(opciones)
     }
 
-    var mymap = L.map('mapid').setView([-25.29807590273343, -57.59930298053507], 10);
+    var mymap = L.map('mapid').setView([-23.3267916, -57.545121], 6);
     L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=Rxa6eCNYkQOw43Wn9BFH', {
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
         maxZoom: 18,
@@ -77,21 +91,22 @@
 
     for (var i = 0; i < datos.valores.length; i++) {
         marker = new L.marker([datos.lat[i], datos.long[i]])
-            .bindPopup('<h3> Codigo: ' + datos.codigos[i] + '</h3> <h5> Ultima medicion: ' + datos.valores[i] + 'C*</h5>')
+            .bindPopup('<h3> Codigo: ' + datos.codigos[i] + '</h3> <h5> Ultima medicion: ' + datos.valores[i] + '  C°</h5>')
             .addTo(mymap);
     }
 
-
-    var latitud = -26.8691035
-    var longitud = -58.3146596
-    mymap.setView([latitud, longitud], 8) 
-    //end of main js 
-    function consulta() {
+    function consulta() //funcion donde al seleccionar un item de la lista enfoca en el mapa a ese item 
+    {
         var com = document.getElementById("select_dispositivo").value
         var option = document.getElementById(com.toString())
         var latitud = option.getAttribute("latitud")
         var longitud = option.getAttribute("longitud")
-        mymap.setView([latitud, longitud], 14)
+        if (com == 'paraguay') {
+            mymap.setView([latitud, longitud], 6) //muestra todo el Py
+        } else {
+            mymap.setView([latitud, longitud], 14)
+        }
+
     }
 
 
