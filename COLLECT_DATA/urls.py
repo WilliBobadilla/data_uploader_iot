@@ -19,6 +19,9 @@ from data_iot.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',index),
+    path('logout',logout_request),
+    path('solicitud_login',solcitud_login),
+    path('data',data),
     path('update',update),
     path('mapa',mapa)
 ]

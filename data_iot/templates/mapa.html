@@ -4,17 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Natanapp</title>
+    <title>Datos</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-   
-
-    {% comment %} css del leaflet {% endcomment %}
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
         integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
         crossorigin="" />
-
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+        integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+        crossorigin=""></script>
 
     <style>
         #mapid {
@@ -27,43 +26,45 @@
 
 <body>
 
-    <h3>Natan </h3>
-    <div>
-        <h4> Mapa de las Comunidades anotadas</h4>
-
+    <h3> Datos de sensores </h3>
+    <div> 
+        <h4> Mapa de los sensores colocados </h4>
     </div>
     <div>
-        <h5>Cantidad de Comunidades registradas: {{cantidad_comunidades}}</h5>
+        <h5>Cantidad de sensores colocados: {{ datos.codigos|length }}</h5>
     </div>
     <div>
-
         <form method="POST" id="formulario" onchange="consulta()">
             {% csrf_token %}
-            <label for="lname">Dispositivos:</label><br>
-            <select id="select_comunidad" class="form-control w-75" name="listo">
-                {% for item in geo %}
-                <option value="{{item.id}}" id="{{item.id}}" latitud="{{item.ubicacion.latitud}}"
-                    longitud="{{item.ubicacion.longitud}}">{item.ciudad}}</option>
-                {% endfor %}
-            </select><br>
-
-            <!-- <input type="submit" value="Subir"> -->
+            <label for="lname">Dispositivos:</label> <br>
+            <select id="select_dispositivo" class="form-control w-75" name="select_dispositivo">
+                <option value="0" id="0" latitud="-26.56" longitud="-58.56" selected> Paraguay</option>
+            </select> <br>
         </form>
     </div>
 
     <div id="mapid"></div>
-    </div>
-    </main>
+
 </body>
 <script>
     {% autoescape off %}
     datos = {{ datos }}
     {% endautoescape %}
-    console.log(datos)
-    var com = document.getElementById("select_comunidad").value
-    var option = document.getElementById(com.toString())
-    console.log(datos)
-    
+    console.log(datos) 
+    var com = document.getElementById("select_dispositivo")
+
+    for (var index = 0; index < datos.codigos.length; index++) {
+        var opciones = document.createElement('option')//agregamos las opciones 
+        console.log(index)
+        opciones.setAttribute('id', datos.codigos[index]);
+        opciones.setAttribute('latitud', datos.lat[index]);
+        opciones.setAttribute('longitud', datos.long[index])
+        var texto = document.createTextNode(datos.codigos[index])
+        opciones.appendChild(texto)
+        com.appendChild(opciones)
+    }
+
+    var mymap = L.map('mapid').setView([-25.29807590273343, -57.59930298053507], 10);
     L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=Rxa6eCNYkQOw43Wn9BFH', {
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
         maxZoom: 18,
@@ -73,32 +74,24 @@
         accessToken: 'your.mapbox.access.token',
         crossOrigin: true
     }).addTo(mymap);
-    var mymap = L.map('mapid').setView([-25.29807590273343, -57.59930298053507], 10);
-    var plano = new Array();
-    var index = 0; //para recorrer la lista
-    var lista_aux = new Array();
-    for (index = 0; index < datos.length; index++) {
-        lista_aux = ['<h2>Comunidad: ' + datos[index].nombre + '</h2>' + '<h4>Responsable: ' + datos[index].responsable + "</h4>" + '<h5>Teléfono: ' + datos[index].telefono_responsable + '</h5>' + "<h4>Meta: " + datos[index].meta + "</h4> <h5>Descripcion: " + datos[index].observacion + '</h5>', datos[index].ubicacion.latitud, datos[index].ubicacion.longitud, datos[index].entregado, datos[index].listo];
-        plano.push(lista_aux);// agregamos al array
-    }
 
     for (var i = 0; i < datos.valores.length; i++) {
-        marker = new L.marker([datos.lat[i], datos.long[i] ])
-            .bindPopup( ' <h3> Codigo: '+ datos.codigo[i]+ '</h3> '    )
+        marker = new L.marker([datos.lat[i], datos.long[i]])
+            .bindPopup('<h3> Codigo: ' + datos.codigos[i] + '</h3> <h5> Ultima medicion: ' + datos.valores[i] + 'C*</h5>')
             .addTo(mymap);
     }
 
 
-    var latitud = option.getAttribute("latitud")
-    var longitud = option.getAttribute("longitud")
-    mymap.setView([latitud, longitud], 12)
+    var latitud = -26.8691035
+    var longitud = -58.3146596
+    mymap.setView([latitud, longitud], 8) 
     //end of main js 
     function consulta() {
-        var com = document.getElementById("select_comunidad").value
+        var com = document.getElementById("select_dispositivo").value
         var option = document.getElementById(com.toString())
         var latitud = option.getAttribute("latitud")
         var longitud = option.getAttribute("longitud")
-        mymap.setView([latitud, longitud], 12)
+        mymap.setView([latitud, longitud], 14)
     }
 
 

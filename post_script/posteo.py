@@ -9,20 +9,20 @@ from time import sleep
 url= 'http://127.0.0.1:8000/'
 
 with open("datos_nuevos.csv","a") as data_temp_csv:
-    nombrefilas= ["temp","fecha","lat","long","ciudad"]  # nombre de los campos
+    nombrefilas= ["temp","fecha","lat","long","codigo"]  # nombre de los campos
     writer=csv.DictWriter(data_temp_csv,fieldnames=nombrefilas) # creamos un objeto writer sobre el archivo, y le especificamos el nombre de kis campos
     #writer.writeheader() #escribimos la primera
     while True: 
         try:
-            temp=random()*10
+            temp=random()*10 
             myobj = { 
                 'temp': str(temp),  
                 'fecha': str(datetime.now()),
-                'lat': -28.56,
-                'long': -56.68,
-                'ciudad': 1
+                'lat': -26.861359, 
+                'long':  -58.298032,
+                'codigo': 'pilar4'
                     }
-            writer.writerow(myobj)
+            writer.writerow(myobj) 
             x = requests.post(url, data = myobj)
             print(x.text) 
             sleep(2)  # cada 20 seg posteamos datos
