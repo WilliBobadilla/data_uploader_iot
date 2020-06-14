@@ -26,7 +26,7 @@ def solcitud_login(request):
     if user is not None and user.is_active: 
         login(request,user)
         return redirect('/data')
-    return render(request,'prueba_login.html',{'mensaje':"Credenciales invalidas  "})
+    return render(request,'index.html',{'mensaje':"Credenciales invalidas  "})
 
 def logout_request(request):
     logout(request)
