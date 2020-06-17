@@ -35,7 +35,6 @@ def logout_request(request):
 
 @csrf_exempt 
 def data(request):
-    
     """
     Vista en donde se maneja el post, y tambien se envian \n
     datos al front-end si el metodo es get 

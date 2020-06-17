@@ -13,9 +13,6 @@
   <script src="https://cdn.jsdelivr.net/npm/@material/drawer@5.1.0/dist/mdc.drawer.min.js"></script>
   <link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
 
-
-
-
   <title>Datos</title>
 </head>
 <style>
@@ -32,22 +29,16 @@
 
   <main class="main-content" style="overflow-x: hidden;" id="main-content">
     <div class="mdc-top-app-bar--fixed-adjust">
-
       <h2>Grafica de los sensores </h2>
       <div class="container">
         <canvas id="myChart"></canvas>
       </div>
-
-
     </div>
   </main>
-
-
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="/static/js/slide.js"></script>
-
 
 <script>
 
@@ -61,10 +52,10 @@
     data: {
       labels: fechas,
       datasets: [{
-        label: 'This week',
+        label: 'Ultimas mediciones',
         data: temperaturas,
         lineTension: 0.3,
-        backgroundColor: "rgba(78, 115, 223, 0.05)",
+        backgroundColor: "rgba(78, 115, 223, 0.08)",
         borderColor: "rgba(78, 115, 223, 1)",
         pointRadius: 3,
         pointBackgroundColor: "rgba(78, 115, 223, 1)",
@@ -80,7 +71,7 @@
 
 
 
-  //setInterval(update,10000) //cada 10 seg actualiza 
+  //setInterval(update,10000) //cada 10 seg actualiza, no implementado aun 
   function succes(datos, status) {
     console.log('fecha no mas' + datos.fechas)
     console.log('valores: ' + datos.valores)
@@ -93,7 +84,6 @@
 
   function update() {
     $.get("/update", succes);
-
   }
 
 </script>
