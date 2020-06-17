@@ -14,3 +14,5 @@ servidor en donde se pueden almacenar y visualizar los datos
 ### Algunos Screenshoots :computer:
 
 <img src="images/1.png"  width="60%" height="35%" />
+<img src="images/2.png"  width="60%" height="35%" />
+<img src="images/3.png"  width="60%" height="35%" />
