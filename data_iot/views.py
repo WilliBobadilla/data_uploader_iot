@@ -119,7 +119,7 @@ def mapa(request):
 #demos 
 def demo_grafica(request):
     """
-    ruta para el demo 
+    Demo: devuelve la grafica con las mediciones
     """
     valores=Medida.objects.all() #hacemos un query 
     cantidad_valores=len(valores)
@@ -136,12 +136,10 @@ def demo_grafica(request):
 
 def demo_mapa(request):
     """
-    Esta vista retorna el mapa de los dispositivos con su ubicacion y \n
+    DEMO: Esta vista retorna el mapa de los dispositivos con su ubicacion y \n
     su ultima medicion 
     """
-    if not request.user.is_authenticated:
-        return render(request,'index.html')
-    
+
     valores=Medida.objects.all().order_by('-id') #hacemos un query y ordenamos de forma descendente
     agregados=[] # para almacenar los ya agregados a esta lista
     temps=[]
