@@ -7,6 +7,25 @@
 <aside class="mdc-drawer mdc-drawer--dismissible">
   <div class="mdc-drawer__content">
 
+    {% if modo == "demo" %}
+    <div class="mdc-list">
+      <a class="mdc-list-item " href="/demodata" aria-current="page">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">description</i>
+          <span class="mdc-list-item__text" >Grafica</span>
+      </a>
+    <a class="mdc-list-item" href="/demomapa">
+      <i class="material-icons mdc-list-item__graphic" aria-hidden="true">map</i>
+      <span class="mdc-list-item__text">Mapa</span> 
+  </a>
+  <a class="mdc-list-item" href="/">
+    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">meeting_room</i>
+    <span class="mdc-list-item__text">Salir</span>
+</a>
+  <h5>Hola, invitado</h5>
+
+    
+    {% else %}
+
       <div class="mdc-list">
             <a class="mdc-list-item " href="/data" aria-current="page">
                 <i class="material-icons mdc-list-item__graphic" aria-hidden="true">description</i>
@@ -23,6 +42,7 @@
            <h5>Hola, {{ request.user.first_name}}</h5>
            
       </div>
+      {% endif %}
   </div>
 </aside>
 

@@ -29,7 +29,7 @@ def DHT11_data():
 	humi, temp = dht.read_retry(dht.DHT11, 23)#pin data conectado al GPIO23, si se usa el DHT22, usamos dht.DHT22
 	return temp 
 
-url= 'http://127.0.0.1:8000/data'
+url= 'https://data-iot-collect.herokuapp.com/data' #'http://127.0.0.1:8000/data'
 
 with open("datos_nuevos.csv","a") as data_temp_csv:
     nombrefilas= ["token","temp","fecha","lat","long","codigo"]  # nombre de los campos
@@ -41,14 +41,14 @@ with open("datos_nuevos.csv","a") as data_temp_csv:
                 'token':token_str,
                 'temp': str(temp),  
                 'fecha': str(datetime.now()),
-                'lat': -25.339450 , 
-                'long':  -57.551921,
-                'codigo': 'ASU1'
+                'lat': -28.339450 , 
+                'long':  -58.551921,
+                'codigo': 'NUW1'
                     }
             writer.writerow(myobj) 
             x = requests.post(url, data = myobj)
             print(x.text) 
-            sleep(2)  # cada 20 seg posteamos datos
+            sleep(4)  # cada 4 seg posteamos datos
         except KeyboardInterrupt: #ctrl + c     
             print("finalizado")
             break

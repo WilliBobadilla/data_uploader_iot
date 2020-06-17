@@ -23,5 +23,8 @@ urlpatterns = [
     path('solicitud_login',solcitud_login),
     path('data',data),
     path('update',update),
-    path('mapa',mapa)
+    path('mapa',mapa),
+
+    path('demodata',demo_grafica),
+    path('demomapa',demo_mapa)
 ]
