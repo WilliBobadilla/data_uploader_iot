@@ -7,7 +7,7 @@ from django.contrib.auth import authenticate, login
 from datetime import datetime
 
 
-tokens=['aBx4Z60o'] # esto realmente debe ser almacenado en la db o sino algun archivo oculto 
+#tokens=['aBx4Z60o'] # esto realmente debe ser almacenado en la db o sino algun archivo oculto 
 def index(request):
     if not request.user.is_authenticated:
         return render(request,'index.html')
@@ -40,12 +40,13 @@ def data(request):
     datos al front-end si el metodo es get 
     """
     if request.method=='POST':#primero verificamos el token
+        tokens= list(Token.objects.values_list('token', flat=True) )
         if request.POST.get('token') in tokens:# si esta en la lista, agrega 
             temp=request.POST.get('temp')
             fecha=request.POST.get('fecha')
             lat=request.POST.get('lat') 
             long=request.POST.get('long') 
-            codigo_id= request.POST.get('codigo') # id de la ciudad
+            codigo_id= request.POST.get('codigo') # codigo del dispositivo 
             try:
                 codigo= Codigo.objects.get(nombre=codigo_id)
             except: # no existe en la db, entonces vamos a crearlo 
