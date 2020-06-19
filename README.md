@@ -8,19 +8,22 @@ servidor en donde se pueden almacenar y visualizar los datos
 
 ### Funcionamiento de la subida de datos 
 Para la subida de datos, en este caso como ejemplo usamos un sensor DHT11, la conexion fisica es: <br>
-   <strong><p style='margin: 10%'>     Pines DHT-------------Pines RPI  </p> </strong>
-   <p style='margin: 10%'>     GND   -----------   GND  </p>  
-   <p style='margin: 10%'>    VCC   -----------   5V    </p> 
-   <p style='margin: 10%'>        DATA  -----------  GPIO23 (puede ser otro gpio pero debe especificarse) </p> 
+   <strong><p style='margin: 5%'> Pines DHT-------------Pines RPI  </p> </strong>
+   <p style='margin:5%'>     GND   -----------   GND  </p>  
+   <p style='margin:5%'>    VCC   -----------   5V    </p> 
+   <p style='margin:5%'>        DATA  -----------  GPIO23 (puede ser otro gpio pero debe especificarse) </p> 
 Si se utiliza otro puerto para el data se debe de cambiar la siguiente linea,      <br>
 ademas si el sensor es DHT22, se cambia tambien el primer parametro por dht.DHT22  <br>
+
 ```
 humi, temp = dht.read_retry(dht.DHT11, 23) # 23 se refiere al GPIO de la RPI
 
 ```
+
 Se necesita una conexion a internet, entonces al correr el script, este va a postear de manera 
 indefinida cada cierto tiempo(especificado en el sleep(tiempo) en segundos), ademas para que el 
 servidor pueda recibir estos datos debe de tener el token que se genera del lado del server
+
 ```
 myobj = { 
                 'token':token_str,
