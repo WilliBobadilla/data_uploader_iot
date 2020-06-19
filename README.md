@@ -36,6 +36,9 @@ En este caso solo se envia  la temperatura, pero se podria enviar muchos datos m
 la ubicacion es estatica, se podria ver algun modulo GPS para obtener la ubicacion si es que 
 el dispositivo cambia de ubicacion por ejemplo. 
 ### Funcionamiento del servidor 
+Basicamente el servidor posee un endpoint en donde recibe los datos por el metodo POST, entonces 
+primeramente verifica si es que esta dentro de los tokens en la DB para poder aceptar el dato 
+y guardar en la base de datos, el endpoint encargado de esto es el <strong>/data </strong>.
 
 
 
