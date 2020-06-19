@@ -10,9 +10,9 @@ servidor en donde se pueden almacenar y visualizar los datos
 ### Funcionamiento de la subida de datos :rocket:
 Para la subida de datos, en este caso como ejemplo usamos un sensor DHT11, la conexion fisica es: <br>
    <strong><p style='margin: 5%'> Pines DHT-------------Pines RPI  </p> </strong>
-   <p style='margin:5%'>     GND   -----------   GND  </p>  
-   <p style='margin:5%'>    VCC   -----------   5V    </p> 
-   <p style='margin:5%'>        DATA  -----------  GPIO23 (puede ser otro gpio pero debe especificarse) </p> 
+   <p style='margin:5%'>     GND   ----------- -------  GND  </p>  
+   <p style='margin:5%'>    VCC   --------------------   5V    </p> 
+   <p style='margin:5%'>    DATA  --------------------  GPIO23 (puede ser otro gpio pero debe especificarse) </p> 
 Si se utiliza otro puerto para el data se debe de cambiar la siguiente linea,      <br>
 ademas si el sensor es DHT22, se cambia tambien el primer parametro por dht.DHT22  <br>
 
