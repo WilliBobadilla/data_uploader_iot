@@ -38,7 +38,7 @@ en donde <strong> token_str </strong> es una variable importada del archivo toke
 En este caso solo se envia  la temperatura, pero se podria enviar muchos datos mas, ademas 
 la ubicacion es estatica, se podria ver algun modulo GPS para obtener la ubicacion si es que 
 el dispositivo cambia de ubicacion por ejemplo. 
-### Funcionamiento del servidor 
+### Funcionamiento del servidor  :factory:
 Basicamente el servidor posee un endpoint en donde recibe los datos por el metodo POST, entonces 
 primeramente verifica si es que esta dentro de los tokens en la DB para poder aceptar el dato 
 y guardar en la base de datos, el endpoint encargado de esto es el <strong>/data </strong>.
@@ -58,3 +58,4 @@ y guardar en la base de datos, el endpoint encargado de esto es el <strong>/data
 
 ### Licencia :page_facing_up:
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+GNU GENERAL PUBLIC LICENSE
