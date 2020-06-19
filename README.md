@@ -8,10 +8,10 @@ servidor en donde se pueden almacenar y visualizar los datos
 
 ### Funcionamiento de la subida de datos 
 Para la subida de datos, en este caso como ejemplo usamos un sensor DHT11, la conexion fisica es: <br>
-       <strong> Pines DHT-------------Pines RPI </strong> <br>
-           GND   -----------   GND     <br>
-           VCC   -----------   5V      <br>
-           DATA  -----------  GPIO23 (puede ser otro gpio pero debe especificarse) <br>
+   <p style='margin: 10%'>    <strong> Pines DHT-------------Pines RPI </strong> <p> <br>
+   <p style='margin: 10%'>     GND   -----------   GND     <br>
+   <p style='margin: 10%'>    VCC   -----------   5V      <br>
+   <p style='margin: 10%'>        DATA  -----------  GPIO23 (puede ser otro gpio pero debe especificarse) <br>
 Si se utiliza otro puerto para el data se debe de cambiar la siguiente linea,      <br>
 ademas si el sensor es DHT22, se cambia tambien el primer parametro por dht.DHT22  <br>
 ```
