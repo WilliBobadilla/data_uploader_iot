@@ -1,5 +1,6 @@
 # data_uploader_iot  :stuck_out_tongue:
-Proyecto en donde con una raspberry pi o placa similar se puede hacer la subida de datos de sensores y visualizacion en una app tipo dashboard. (Screenshoots mas abajo)
+Proyecto en donde con una raspberry pi o placa similar se puede hacer la subida de datos de sensores y visualizacion en una app tipo dashboard, algo basico que se puede mejorar con mas funcionalidades, para eso ver (pendientes) mas abajo. (Screenshoots mas abajo)
+ Live Demo <strong> <a> https://data-iot-collect.herokuapp.com/ </a> </strong>  
 
 ## Descripcion :scroll:
 Basicamente es un sistema que consta en dos partes, una es la subida de datos mediante una 
