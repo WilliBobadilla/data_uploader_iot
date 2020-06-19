@@ -43,10 +43,15 @@ Basicamente el servidor posee un endpoint en donde recibe los datos por el metod
 primeramente verifica si es que esta dentro de los tokens en la DB para poder aceptar el dato 
 y guardar en la base de datos, el endpoint encargado de esto es el <strong>/data </strong>.
 
-
-
 ### Esquema 
 <img src="images/diagramasensores.png"  width="60%" height="35%" />
+
+
+### Algunos Screenshoots :computer:
+
+<img src="images/1.png"  width="60%" height="35%" />
+<img src="images/2.png"  width="60%" height="35%" />
+<img src="images/3.png"  width="60%" height="35%" />
 
 ### Pendiente (TODO) :arrows_clockwise:
 Este es un proyecto basico, le faltan muchas partes para que sea un poco mas interesante todo lo que 
@@ -55,12 +60,6 @@ se puede hacer, pero basicamente algunas cosas a agregar son:
 2. Reportes para descargar en cualquier formato, .xls por ejemplo.
 3. Agregar del lado del hardware version de SIM800 + Arduino (o similares), para poder postear mediante la red GSM los datos al servidor.     
 
-
-### Algunos Screenshoots :computer:
-
-<img src="images/1.png"  width="60%" height="35%" />
-<img src="images/2.png"  width="60%" height="35%" />
-<img src="images/3.png"  width="60%" height="35%" />
 
 ### Licencia :page_facing_up:
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
