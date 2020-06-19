@@ -48,6 +48,12 @@ y guardar en la base de datos, el endpoint encargado de esto es el <strong>/data
 ### Esquema 
 <img src="images/diagramasensores.png"  width="60%" height="35%" />
 
+### Pendiente (TODO) :arrows_clockwise:
+Este es un proyecto basico, le faltan muchas partes para que sea un poco mas interesante todo lo que 
+se puede hacer, pero basicamente algunas cosas a agregar son: 
+1. Las graficas poder filtrar por codigo. 
+2. Reportes para descargar en cualquier formato, .xls por ejemplo.
+3. Agregar del lado del hardware version de SIM800 + Arduino (o similares), para poder postear mediante la red GSM los datos al servidor.     
 
 
 ### Algunos Screenshoots :computer:
