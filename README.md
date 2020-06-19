@@ -1,4 +1,4 @@
-# data_uploader_iot
+# data_uploader_iot  :stuck_out_tongue:
 Proyecto en donde con una raspberry pi o placa similar se puede hacer la subida de datos de sensores y visualizacion en una app tipo dashboard. (Screenshoots mas abajo)
 
 ## Descripcion :scroll:
@@ -6,7 +6,7 @@ Basicamente es un sistema que consta en dos partes, una es la subida de datos me
 Raspberry Pi y cualquier tipo de sensor(en este caso de temperatura) y la segunda parte es el
 servidor en donde se pueden almacenar y visualizar los datos 
 
-### Funcionamiento de la subida de datos 
+### Funcionamiento de la subida de datos :rocket:
 Para la subida de datos, en este caso como ejemplo usamos un sensor DHT11, la conexion fisica es: <br>
    <strong><p style='margin: 5%'> Pines DHT-------------Pines RPI  </p> </strong>
    <p style='margin:5%'>     GND   -----------   GND  </p>  
@@ -55,3 +55,6 @@ y guardar en la base de datos, el endpoint encargado de esto es el <strong>/data
 <img src="images/1.png"  width="60%" height="35%" />
 <img src="images/2.png"  width="60%" height="35%" />
 <img src="images/3.png"  width="60%" height="35%" />
+
+### Licencia :page_facing_up:
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
