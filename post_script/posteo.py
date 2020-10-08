@@ -13,7 +13,7 @@ from random import random
 import csv 
 from datetime import datetime
 from time import sleep
-from token_disp import token_str
+from tokenSecret.token_disp import token_str
 """ Instrucciones para instalar la libreria 
     https://github.com/WilliBobadilla/bootcamp/blob/master/practica4_sensor.py
 """
@@ -24,13 +24,17 @@ try: # para usar con la rpi
 except: 
     print("No tenes gpio!")
 
+url= 'https://data-iot-collect.herokuapp.com/data' 
+#url='http://127.0.0.1:8000/data'
+codigo='SanIgnacio1'
+
+
 def DHT11_data():
 	# leemos los datos del sensor, la humedad y la temperatura
 	humi, temp = dht.read_retry(dht.DHT11, 23)#pin data conectado al GPIO23, si se usa el DHT22, usamos dht.DHT22
 	return temp 
 
-url= 'https://data-iot-collect.herokuapp.com/data' 
-#url='http://127.0.0.1:8000/data'
+
 
 with open("datos_nuevos.csv","a") as data_temp_csv:
     nombrefilas= ["token","temp","fecha","lat","long","codigo"]  # nombre de los campos
@@ -44,11 +48,13 @@ with open("datos_nuevos.csv","a") as data_temp_csv:
                 'fecha': str(datetime.now()),
                 'lat': -26.858116 , 
                 'long':  -58.293288,
-                'codigo': 'Pilar1'
+                'codigo': codigo
                     }
-            writer.writerow(myobj) 
             x = requests.post(url, data = myobj)
-            print(x.text) 
+            myobj["token"]=" " #para no guardar el token
+            writer.writerow(myobj) 
+            
+            print(x.text,"codigo:",codigo,"temp:",temp) 
             sleep(4)  # cada 4 seg posteamos datos
         except KeyboardInterrupt: #ctrl + c     
             print("finalizado")
