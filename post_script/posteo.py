@@ -13,7 +13,9 @@ from random import random
 import csv 
 from datetime import datetime
 from time import sleep
-from tokenSecret.token_disp import token_str
+from tokenSecret.token_disp import token_str#crear una carpeta tokenSecret y dentro un 
+# script con el nombre: token_disp y dentro crear una variable: token_str que contiene el token
+# en formato string
 """ Instrucciones para instalar la libreria 
     https://github.com/WilliBobadilla/bootcamp/blob/master/practica4_sensor.py
 """
