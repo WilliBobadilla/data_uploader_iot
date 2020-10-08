@@ -63,7 +63,8 @@ def data(request):
     else:
         if not request.user.is_authenticated:
             return render(request,'index.html')
-        valores=Medida.objects.all() #hacemos un query 
+        valores=Medida.objects.all() #hacemos un query
+        codigos= list(Codigo.objects.values_list("nombre",flat=True))
         cantidad_valores=len(valores)
         if cantidad_valores>12:
             valores= valores[cantidad_valores-12:] #agarramos los ultimos doce, si hay mas de 12 datos 
@@ -71,8 +72,7 @@ def data(request):
         for dato in valores: 
             datos.append({"temperatura":dato.temperatura,"fecha":dato.fecha,"codigo":dato.codigo.nombre})
         
-        #print(datos)
-        return render(request,'grafica.html',{'datos':datos,"title":"Grafica",'modo':'normal' })
+        return render(request,'grafica.html',{'datos':datos,"codigos":codigos,"title":"Grafica","modo":"normal"})
 
 @csrf_exempt
 def update_graph(request):
@@ -80,8 +80,9 @@ def update_graph(request):
     Vista en donde se actualiza el mapa \n
     en base a una solicitud por post
     """
-    if not request.user.is_authenticated:
-        return render(request,'index.html')
+    #if not request.user.is_authenticated:
+        #return render(request,'index.html')
+    
     codigo=request.POST.get("codigo")
     if codigo!="paraguay":
         valores= Medida.objects.filter(codigo__nombre__contains=codigo) #hacemos un query y traemos el de interes
@@ -106,29 +107,27 @@ def mapa(request):
     if not request.user.is_authenticated:
         return render(request,'index.html')
     
-    valores=Medida.objects.all().order_by('-id') #hacemos un query y ordenamos de forma descendente
-    agregados=[] # para almacenar los ya agregados a esta lista
+    codigos= list(Codigo.objects.values_list("nombre",flat=True))
+    print(codigos) 
     temps=[]
     fechas=[]
     lat=[]
-    long=[] 
-    for dato in valores:
-        if not dato.codigo.nombre in agregados: # vemos si es que no esta 
-            agregados.append(dato.codigo.nombre) # agregamos a la lista de los ya agregados
-            temps.append(dato.temperatura)
-            fechas.append(dato.fecha)
-            lat.append(dato.latitud)
-            long.append(dato.longitud) 
-    datos= {'valores':temps, 'fechas':fechas, 'codigos':agregados,'lat':lat,'long':long}        
-    return render(request,'mapa.html', {'datos':datos, 'title':"Mapa de Sensores",'modo':'normal' }  )
-
-
+    long=[]
+    for codigo in codigos:
+        valor=Medida.objects.filter(codigo__nombre__contains=codigo).last() #hacemos un query y ordenamos de forma descendente
+        temps.append(valor.temperatura)
+        fechas.append(valor.fecha)
+        lat.append(valor.latitud)
+        long.append(valor.longitud)
+    datos= {'valores':temps, 'fechas':fechas, 'codigos':codigos,'lat':lat,'long':long}        
+    return render(request,'mapa.html', {'datos':datos, 'title':"Mapa de Sensores","modo":'normal' }  )
 #demos 
 def demo_grafica(request):
     """
     Demo: devuelve la grafica con las mediciones
     """
-    valores=Medida.objects.all() #hacemos un query 
+    valores=Medida.objects.all() #hacemos un query
+    codigos= list(Codigo.objects.values_list("nombre",flat=True))
     cantidad_valores=len(valores)
     if cantidad_valores>12:
         valores= valores[cantidad_valores-12:] #agarramos los ultimos doce, si hay mas de 12 datos 
@@ -136,26 +135,24 @@ def demo_grafica(request):
     for dato in valores: 
         datos.append({"temperatura":dato.temperatura,"fecha":dato.fecha,"codigo":dato.codigo.nombre})
     
-    return render(request,'grafica.html',{'datos':datos,"title":"Grafica","modo":"demo"})
+    return render(request,'grafica.html',{'datos':datos,"codigos":codigos,"title":"Grafica","modo":"demo"})
 
 def demo_mapa(request):
     """
     DEMO: Esta vista retorna el mapa de los dispositivos con su ubicacion y \n
     su ultima medicion 
     """
-
-    valores=Medida.objects.all().order_by('-id') #hacemos un query y ordenamos de forma descendente
-    agregados=[] # para almacenar los ya agregados a esta lista
+    codigos= list(Codigo.objects.values_list("nombre",flat=True))
+    print(codigos) 
     temps=[]
     fechas=[]
     lat=[]
-    long=[] 
-    for dato in valores:
-        if not dato.codigo.nombre in agregados: # vemos si es que no esta 
-            agregados.append(dato.codigo.nombre) # agregamos a la lista de los ya agregados
-            temps.append(dato.temperatura)
-            fechas.append(dato.fecha)
-            lat.append(dato.latitud)
-            long.append(dato.longitud) 
-    datos= {'valores':temps, 'fechas':fechas, 'codigos':agregados,'lat':lat,'long':long}        
+    long=[]
+    for codigo in codigos:
+        valor=Medida.objects.filter(codigo__nombre__contains=codigo).last() #hacemos un query y ordenamos de forma descendente
+        temps.append(valor.temperatura)
+        fechas.append(valor.fecha)
+        lat.append(valor.latitud)
+        long.append(valor.longitud)
+    datos= {'valores':temps, 'fechas':fechas, 'codigos':codigos,'lat':lat,'long':long}        
     return render(request,'mapa.html', {'datos':datos, 'title':"Mapa de Sensores","modo":'demo' }  )

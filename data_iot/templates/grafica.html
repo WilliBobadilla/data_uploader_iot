@@ -32,7 +32,7 @@
   <div class="mdc-top-app-bar--fixed-adjust">
     <h2>Grafica de los sensores </h2>
     <div>
-      <form method="POST" id="formulario" onchange="consulta()">
+      <form id="formulario" onchange="consulta()">
         {% csrf_token %}
         <label for="lname">Dispositivos:</label> <br>
         <select id="select_dispositivo" class="form-control w-75" name="select_dispositivo">
@@ -55,14 +55,16 @@
 
   {% autoescape off %}
   datos = {{ datos }}
+  codigos = {{ codigos }}
   {% endautoescape %}
+  console.log(datos)
   var com = document.getElementById("select_dispositivo")
   var agregados = []
   let codigo
-  for (var index = 0; index < datos.length; index++) {
-    codigo = datos[index].codigo
+  for (var index = 0; index < codigos.length; index++) {
+    codigo = codigos[index]
     // solo agregamos las opciones una vez en el select
-    if (!(agregados.includes(codigo)) ) {
+    if (!(agregados.includes(codigo))) {
       var opciones = document.createElement('option')//agregamos las opciones 
       opciones.setAttribute('id', codigo);
       var texto = document.createTextNode(codigo)
@@ -87,7 +89,7 @@
     data: {
       labels: fechas,
       datasets: [{
-        label: "codigos",
+        label: com.value,
         data: temperaturas,
         lineTension: 0.3,
         backgroundColor: "rgba(78, 115, 223, 0.08)",
@@ -108,24 +110,19 @@
 
   //setInterval(update,10000) //cada 10 seg actualiza, no implementado aun 
   function succes(datos, status) {
-    
-    myChart.data.labels=datos.fechas
-    myChart.data.datasets[0].data=datos.valores
+    myChart.data.datasets[0].label = datos.codigo // actualizamos el titulo dentro de la grafica
+    myChart.data.labels = datos.fechas
+    myChart.data.datasets[0].data = datos.valores
     myChart.update();
 
   }
 
-  function update() {
-
-
-  }
 
   function consulta() {
     let valor = document.getElementById("select_dispositivo").value
-    console.log(valor)
-    $.post("/update",{
-      codigo:valor
-    } ,succes)
+    $.post("/update", {
+      codigo: valor
+    }, succes)
   }
 
 
