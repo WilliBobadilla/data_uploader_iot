@@ -9,7 +9,7 @@ Licencia: GNU General Public License v3.0
 # lo hago con random para emular las mediciones, de igual manera esta la funcion DHT11 
 # que colecta la temperatura 
 import requests 
-from random import random
+from random import random 
 import csv 
 from datetime import datetime
 from time import sleep
@@ -29,7 +29,8 @@ def DHT11_data():
 	humi, temp = dht.read_retry(dht.DHT11, 23)#pin data conectado al GPIO23, si se usa el DHT22, usamos dht.DHT22
 	return temp 
 
-url= 'https://data-iot-collect.herokuapp.com/data' #'http://127.0.0.1:8000/data'
+url= 'https://data-iot-collect.herokuapp.com/data' 
+#url='http://127.0.0.1:8000/data'
 
 with open("datos_nuevos.csv","a") as data_temp_csv:
     nombrefilas= ["token","temp","fecha","lat","long","codigo"]  # nombre de los campos
@@ -41,9 +42,9 @@ with open("datos_nuevos.csv","a") as data_temp_csv:
                 'token':token_str,
                 'temp': str(temp),  
                 'fecha': str(datetime.now()),
-                'lat': -28.339450 , 
-                'long':  -58.551921,
-                'codigo': 'NUW1'
+                'lat': -26.858116 , 
+                'long':  -58.293288,
+                'codigo': 'Pilar1'
                     }
             writer.writerow(myobj) 
             x = requests.post(url, data = myobj)

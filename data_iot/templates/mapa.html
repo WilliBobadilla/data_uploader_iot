@@ -91,7 +91,7 @@
 
     for (var i = 0; i < datos.valores.length; i++) {
         marker = new L.marker([datos.lat[i], datos.long[i]])
-            .bindPopup('<h3> Codigo: ' + datos.codigos[i] + '</h3> <h5> Ultima medicion: ' + datos.valores[i] + '  C°</h5>')
+            .bindPopup('<h3> Codigo: ' + datos.codigos[i] + '</h3> <h5> Ultima medicion: ' + datos.valores[i].toFixed(2) + '  C°</h5>')
             .addTo(mymap);
     }
 
@@ -104,7 +104,7 @@
         if (com == 'paraguay') {
             mymap.setView([latitud, longitud], 6) //muestra todo el Py
         } else {
-            mymap.setView([latitud, longitud], 14)
+            mymap.setView([latitud, longitud], 14) 
         }
 
     }

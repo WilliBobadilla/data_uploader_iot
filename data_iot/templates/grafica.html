@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,18 +24,28 @@
 </style>
 
 
-  {% block bar %}
-  {% include "layouts/slidebar.html" %}
-  {% endblock %}
+{% block bar %}
+{% include "layouts/slidebar.html" %}
+{% endblock %}
 
-  <main class="main-content" style="overflow-x: hidden;" id="main-content">
-    <div class="mdc-top-app-bar--fixed-adjust">
-      <h2>Grafica de los sensores </h2>
-      <div class="container">
-        <canvas id="myChart"></canvas>
-      </div>
+<main class="main-content" style="overflow-x: hidden;" id="main-content">
+  <div class="mdc-top-app-bar--fixed-adjust">
+    <h2>Grafica de los sensores </h2>
+    <div>
+      <form method="POST" id="formulario" onchange="consulta()">
+        {% csrf_token %}
+        <label for="lname">Dispositivos:</label> <br>
+        <select id="select_dispositivo" class="form-control w-75" name="select_dispositivo">
+          <option value="paraguay" id="paraguay" latitud="-23.3267916" longitud="-57.545121" selected> Paraguay
+          </option>
+        </select> <br>
+      </form>
     </div>
-  </main>
+    <div class="container">
+      <canvas id="myChart"></canvas>
+    </div>
+  </div>
+</main>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -43,16 +54,40 @@
 <script>
 
   {% autoescape off %}
-  temperaturas = {{ valores }}
-  fechas = {{ fechas }}
+  datos = {{ datos }}
   {% endautoescape %}
+  var com = document.getElementById("select_dispositivo")
+  var agregados = []
+  let codigo
+  for (var index = 0; index < datos.length; index++) {
+    codigo = datos[index].codigo
+    // solo agregamos las opciones una vez en el select
+    if (!(agregados.includes(codigo)) ) {
+      var opciones = document.createElement('option')//agregamos las opciones 
+      opciones.setAttribute('id', codigo);
+      var texto = document.createTextNode(codigo)
+      opciones.appendChild(texto)
+      com.appendChild(opciones)
+      agregados.push(codigo)
+    }
+  }
   var ctx = document.getElementById("myChart").getContext('2d');
+  var fechas = []
+  var codigos = []
+  var temperaturas = []
+  for (var i = 0; i < datos.length; i++) {
+    fechas.push(datos[i].fecha)
+    codigos.push(datos[i].codigo)
+    temperaturas.push(datos[i].temperatura)
+  }
+  console.log(fechas)
+  console.log(temperaturas)
   var myChart = new Chart(ctx, {
     type: 'line',
     data: {
       labels: fechas,
       datasets: [{
-        label: 'Ultimas mediciones',
+        label: "codigos",
         data: temperaturas,
         lineTension: 0.3,
         backgroundColor: "rgba(78, 115, 223, 0.08)",
@@ -73,18 +108,26 @@
 
   //setInterval(update,10000) //cada 10 seg actualiza, no implementado aun 
   function succes(datos, status) {
-    console.log('fecha no mas' + datos.fechas)
-    console.log('valores: ' + datos.valores)
-    myChart.data.labels.pop()
-    myChart.data.datasets[0].data.pop()
-    myChart.data.labels.push(datos.fechas)
-    myChart.data.datasets[0].data.push(datos.valores)
-    myChart.update()
+    
+    myChart.data.labels=datos.fechas
+    myChart.data.datasets[0].data=datos.valores
+    myChart.update();
+
   }
 
   function update() {
-    $.get("/update", succes);
+
+
   }
+
+  function consulta() {
+    let valor = document.getElementById("select_dispositivo").value
+    console.log(valor)
+    $.post("/update",{
+      codigo:valor
+    } ,succes)
+  }
+
 
 </script>
 

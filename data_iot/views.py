@@ -7,7 +7,7 @@ from django.contrib.auth import authenticate, login
 from datetime import datetime
 
 
-#tokens=['aBx4Z60o'] # esto realmente debe ser almacenado en la db o sino algun archivo oculto 
+
 def index(request):
     if not request.user.is_authenticated:
         return render(request,'index.html')
@@ -67,28 +67,35 @@ def data(request):
         cantidad_valores=len(valores)
         if cantidad_valores>12:
             valores= valores[cantidad_valores-12:] #agarramos los ultimos doce, si hay mas de 12 datos 
-        temps=[]
-        fechas=[]
+        datos=[]
         for dato in valores: 
-            temps.append(dato.temperatura)
-            fechas.append(dato.fecha)  
-        print(valores)
+            datos.append({"temperatura":dato.temperatura,"fecha":dato.fecha,"codigo":dato.codigo.nombre})
         
-        return render(request,'grafica.html',{'valores':temps, 'fechas':fechas,"title":"Grafica",'modo':'normal' })
+        #print(datos)
+        return render(request,'grafica.html',{'datos':datos,"title":"Grafica",'modo':'normal' })
 
-def update(request):
+@csrf_exempt
+def update_graph(request):
+    """
+    Vista en donde se actualiza el mapa \n
+    en base a una solicitud por post
+    """
     if not request.user.is_authenticated:
         return render(request,'index.html')
-    valores=Medida.objects.all() #hacemos un query y traemos todo 
+    codigo=request.POST.get("codigo")
+    if codigo!="paraguay":
+        valores= Medida.objects.filter(codigo__nombre__contains=codigo) #hacemos un query y traemos el de interes
+    else: 
+        valores=Medida.objects.all()
     cantidad_valores=len(valores)
-    if cantidad_valores>12:
+    if cantidad_valores>12:#agarramos los ultimos 12 si es mas que 12 los datos 
         valores= valores[cantidad_valores-12:] 
     temps=[]
     fechas=[]
     for dato in valores: 
         temps.append(dato.temperatura)
         fechas.append(dato.fecha)  
-    return JsonResponse({'valores':temps, 'fechas':fechas })
+    return JsonResponse({'valores':temps, 'fechas':fechas,"codigo":codigo })
 
 
 def mapa(request):
@@ -125,14 +132,11 @@ def demo_grafica(request):
     cantidad_valores=len(valores)
     if cantidad_valores>12:
         valores= valores[cantidad_valores-12:] #agarramos los ultimos doce, si hay mas de 12 datos 
-    temps=[]
-    fechas=[]
+    datos=[]
     for dato in valores: 
-        temps.append(dato.temperatura)
-        fechas.append(dato.fecha)  
-    print(valores)
+        datos.append({"temperatura":dato.temperatura,"fecha":dato.fecha,"codigo":dato.codigo.nombre})
     
-    return render(request,'grafica.html',{'valores':temps, 'fechas':fechas,"title":"Grafica","modo":"demo"})
+    return render(request,'grafica.html',{'datos':datos,"title":"Grafica","modo":"demo"})
 
 def demo_mapa(request):
     """

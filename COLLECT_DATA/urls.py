@@ -22,9 +22,8 @@ urlpatterns = [
     path('logout',logout_request),
     path('solicitud_login',solcitud_login),
     path('data',data),
-    path('update',update),
+    path('update', update_graph),
     path('mapa',mapa),
-
     path('demodata',demo_grafica),
     path('demomapa',demo_mapa)
 ]
