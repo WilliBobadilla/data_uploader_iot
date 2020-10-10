@@ -115,6 +115,7 @@ def mapa(request):
     long=[]
     for codigo in codigos:
         valor=Medida.objects.filter(codigo__nombre__contains=codigo).last() #hacemos un query y ordenamos de forma descendente
+        print(valor)
         temps.append(valor.temperatura)
         fechas.append(valor.fecha)
         lat.append(valor.latitud)
