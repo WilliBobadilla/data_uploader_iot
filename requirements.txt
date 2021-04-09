@@ -1,4 +1,4 @@
-Django==2.2.10
+Django==2.2.20
 gunicorn
 whitenoise==3.3.1
 psycopg2==2.8.3
